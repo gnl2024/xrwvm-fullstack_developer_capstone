@@ -124,3 +124,40 @@ img{
     text-align:center;
     box-shadow: 2px 2px 3px #999;  
 }
+.contact-container {
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  padding: 30px;
+  margin-top: 40px;
+  background-color: #fff;
+}
+
+.contact-icon {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.contact-info a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-header {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.contact-image-top {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+

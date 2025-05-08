@@ -14,6 +14,8 @@ import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
+from django.views.decorators.http import require_GET
+
 
 
 # Get an instance of a logger
@@ -39,10 +41,13 @@ def login_user(request):
     return JsonResponse(data)
 
 # Create a `logout_request` view to handle sign out request
+
+
+@require_GET
 def logout_request(request):
     logout(request)
-    data = {"userName":""}
-    return JsonResponse(data)
+    return JsonResponse({"success": True, "userName": ""})
+
 # ...
 
 # Create a `registration` view to handle sign up request

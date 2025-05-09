@@ -42,11 +42,12 @@ def login_user(request):
 
 # Create a `logout_request` view to handle sign out request
 
-
 @require_GET
 def logout_request(request):
     logout(request)
-    return JsonResponse({"success": True, "userName": ""})
+    data = {"userName":""}
+    return JsonResponse(data)
+
 
 # ...
 

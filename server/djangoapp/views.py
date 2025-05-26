@@ -69,7 +69,7 @@ def registration(request):
         User.objects.get(username=username)
         username_exist = True
     except User.DoesNotExist:
-        logger.debug(f"{username} is new user") 
+        logger.debug(f"{username} is new user")
 
     if not username_exist:
         user = User.objects.create_user(
@@ -91,7 +91,7 @@ def get_dealerships(request, state="All"):
     if state == "All":
         endpoint = "/fetchDealers"
     else:
-        endpoint = f"/fetchDealers/{state}" # f-string
+        endpoint = f"/fetchDealers/{state}"
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
 
@@ -107,7 +107,7 @@ def get_dealer_reviews(request, dealer_id):
         reviews = get_request(endpoint)
         for review_detail in reviews:
             sentiment = analyze_review_sentiments(review_detail["review"])
-            print(sentiment)  
+            print(sentiment)
             review_detail["sentiment"] = sentiment["sentiment"]
         return JsonResponse({"status": 200, "reviews": reviews})
     else:
@@ -126,14 +126,14 @@ def get_dealer_details(request, dealer_id):
 
 # Create a `add_review` view to submit a review
 def add_review(request):
-    if not request.user.is_anonymous: 
+    if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
-            response = post_review(data)  
+            post_review(data)
             return JsonResponse({"status": 200})
-        except Exception as e:  
+        except Exception as e:
             logger.error(f"Error in posting review: {e}")
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse(
+                {"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
-        

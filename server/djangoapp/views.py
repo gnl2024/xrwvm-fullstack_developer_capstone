@@ -49,16 +49,14 @@ def get_cars(request):
     car_models = CarModel.objects.select_related("car_make")
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+        cars.append({
+            "CarModel": car_model.name, "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
 
 
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-    context = {}
-
-    # Load JSON data from the request body
     data = json.loads(request.body)
     username = data["userName"]
     password = data["password"]
@@ -94,7 +92,7 @@ def registration(request):
         return JsonResponse(data)
 
 
-# Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+# Update the `get_dealerships` render list of dealerships all by defaultd
 def get_dealerships(request, state="All"):
     if state == "All":
         endpoint = "/fetchDealers"
@@ -114,9 +112,9 @@ def get_dealer_reviews(request, dealer_id):
         endpoint = f"/fetchReviews/dealer/{str(dealer_id)}" # f-string
         reviews = get_request(endpoint)
         for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail["review"])
-            print(response) # Black generally doesn't remove print statements unless configured
-            review_detail["sentiment"] = response["sentiment"]
+            sentiment = analyze_review_sentiments(review_detail["review"])
+            print(sentiment)  
+            review_detail["sentiment"] = sentiment["sentiment"]
         return JsonResponse({"status": 200, "reviews": reviews})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
@@ -125,7 +123,7 @@ def get_dealer_reviews(request, dealer_id):
 # Create a `get_dealer_details` view to render the dealer details
 def get_dealer_details(request, dealer_id):
     if dealer_id:
-        endpoint = f"/fetchDealer/{str(dealer_id)}" # f-string
+        endpoint = f"/fetchDealer/{str(dealer_id)}"  # f-string
         dealership = get_request(endpoint)
         return JsonResponse({"status": 200, "dealer": dealership})
     else:
@@ -134,12 +132,12 @@ def get_dealer_details(request, dealer_id):
 
 # Create a `add_review` view to submit a review
 def add_review(request):
-    if not request.user.is_anonymous: # More Pythonic than '== False'
+    if not request.user.is_anonymous:  # More Pythonic than '== False'
         data = json.loads(request.body)
         try:
-            response = post_review(data) # Unused variable 'response' - linter would flag
+            response = post_review(data)  
             return JsonResponse({"status": 200})
-        except Exception as e: # Catch specific exceptions if possible, and log the error
+        except Exception as e:  
             logger.error(f"Error in posting review: {e}")
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
